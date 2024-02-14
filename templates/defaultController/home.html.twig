@@ -1,0 +1,39 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Accueil {% endblock %}
+       
+{% block content %} 
+    <div class="container-fluid">
+		<div class="row justify-content-center">
+			<div class="col-12 col-md-10">
+				<h1 class="text-center">Nos différents types de produits</h1> 
+
+				<h2>Nos catégories de produits</h2>
+				{% for type in types %}
+				<a href="index.php?page=productsList&id_Type={{type.id}}">{{type.label}} </a>
+                <br>
+                {% endfor %}
+
+				<br><br><h2>Nos produits</h2>
+				{% for product in products %}
+					<div class="card">
+						<img src="images/{{product.image}}" class="card-img-top" >
+						<div class="card-body">
+							<h5 class="card-title">{{product.id}} {{product.name}}</h5>
+							<p class="card-text">{{product.description}}</p>
+							{% if product.stock > 3 %}
+								<p class="card-text"><small class="text-body-secondary">{{product.price}}€. Encore {{product.stock}} en stock !</small></p>
+							{% else %}
+								<p class="card-text"><small class="text-body-secondary">{{product.price}}€. <h3>Il n'en reste que {{product.stock}} en stock !</h3></small></p>
+							{% endif %}
+							<a href="index.php?page=ratingsList&id={{product.id}}">Avis sur le produit</a>
+							<a href="index.php?page=addRating&id={{product.id}}">Donnez votre avis sur ce produit !</a>
+						</div>
+					</div>
+				{% endfor %}
+
+
+			</div>
+		</div>
+	</div>
+{% endblock %} 

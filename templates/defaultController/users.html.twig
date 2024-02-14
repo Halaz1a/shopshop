@@ -1,0 +1,25 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Users {% endblock %}
+       
+{% block content %} 
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10">
+                <h1 class="text-center">Liste des users</h1>
+
+                {% for user in users %}
+                    <tr><td>{{user.idUser}}</td> <td>{{user.email}}</td> <td>{{user.lastName}}</td> <td>{{user.firstName}}</td> <td>{{user.password}}</td> <td>
+                    {% for r in user.roles %}
+                        {{r}}
+                    {% endfor %}
+                </td> <td>{{user.address}}</td> <td>{{user.postalCode}}</td> <td>{{user.city}}</td> <td>{{user.phone}}</td></tr>
+                <a href="index.php?page=updateUser&id={{user.idUser}}"><i class="bi bi-pen-fill"></i></a>
+                <a href="index.php?page=deleteUser&id={{user.idUser}}"><i class="bi bi-trash2-fill"></i></a>
+                <br><br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %} 
+       

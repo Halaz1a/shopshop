@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Liste des avis{% endblock %}
+       
+{% block content %} 
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10">
+                <h1 class="text-center">Liste des avis du produit {{product.name}} </h1>
+
+                {% for rating in ratings %}
+                    {{rating.idUser.lastName}} {{rating.idUser.firstName}}<br>
+                
+                    Note :
+                    {% for i in range(1, rating.stars) %}
+                        <i class="bi bi-star-fill"></i>
+                    {% endfor %}<br>
+                    Commentaire : {{rating.comment}}
+                    <br><br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %} 

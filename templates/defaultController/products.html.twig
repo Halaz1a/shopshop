@@ -1,0 +1,28 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Products {% endblock %}
+       
+{% block content %} 
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10">
+                <h1 class="text-center">Page des produits</h1>
+
+                {% for product in products %}
+                {{product.id}} <h3>{{product.name}}</h3> {{product.description}} {{product.price}}€<br>
+                {{product.type.id}} {{product.type.label}}<br>
+                {{product.stock}}
+                <a href="index.php?page=updateProduct&id={{product.id}}"><i class="bi bi-pen-fill"></i></a>
+                <a href="index.php?page=deleteProduct&id={{product.id}}"><i class="bi bi-trash2-fill"></i></a>
+                <br><br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %} 
+
+       
+
+    
+
+
