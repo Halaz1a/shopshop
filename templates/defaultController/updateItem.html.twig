@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+{% block title %} {{ parent() }} Modifier un item {% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+        <div class="col-12 col-md-6 align-items-center">
+            <h1 class="text-center text-primary fw-bold m-2">Modifier un item</h1><br>
+
+            <h3>{{product.name}}</h3>
+            {{product.description}}<br>
+
+            <form action="" method="post">
+                <input type="text" name="quantity" class="form-control" placeholder="Nouvelle quantité" required>
+                    
+                <div class="text-center">
+                    <input type="submit" value="Modifier" class="btn btn-primary m-2">
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+</div>
+{% endblock %}

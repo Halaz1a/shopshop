@@ -21,8 +21,10 @@
 							{% else %}
 								<p class="card-text"><small class="text-body-secondary">{{product.price}}€. <h3>Il n'en reste que {{product.stock}} en stock !</h3></small></p>
 							{% endif %}
+							<a href="index.php?page=addCartItem&id={{product.id}}">Ajouter ce produit au panier</a>
 						</div>
 					</div>
+					
 					{% endfor %}
 
 

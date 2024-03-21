@@ -55,6 +55,13 @@ class Router
             'updateCart'=> [DefaultController::class, 'updateCart', ["admin"]],
             'addRating'=> [DefaultController::class, 'addRating', []],
             'ratingsList'=> [DefaultController::class, 'ratingsList', []],
+            'addItem'=> [DefaultController::class, 'addItem', ["admin"]],
+            'itemsList'=> [DefaultController::class, 'itemsList', ["admin"]],
+            'addCartItem'=> [DefaultController::class, 'addCartItem', []],
+            'myCart'=> [DefaultController::class, 'myCart', []],
+            'deleteItem'=> [DefaultController::class, 'deleteItem', ["admin"]],
+            'deleteCartItem'=> [DefaultController::class, 'deleteCartItem', []],
+            'updateItem'=> [DefaultController::class, 'updateItem', ["admin"]],
         ];
         $this->defaultPage = 'home';
         $this->errorPage = '404';

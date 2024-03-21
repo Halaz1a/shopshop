@@ -1,0 +1,25 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Panier {% endblock %}
+       
+{% block content %} 
+    <div class="container-fluid">
+		<div class="row justify-content-center">
+			<div class="col-12 col-md-10">
+				<h1 class="text-center">Mon panier</h1> 
+
+					{% for item in items %}
+					    Nom du produit : {{item.id_Product.name}}<br>
+                        Quantité : {{item.quantity}}<br>
+                        Prix à l'unité : {{item.unitPrice}}<br>
+						<a href="index.php?page=updateCartItem&id_Cart={{item.id_Cart.id_Cart}}&id_Product={{item.id_Product.id}}"><i class="bi bi-pen-fill"></i></a>
+                		<a href="index.php?page=deleteCartItem&id_Cart={{item.id_Cart.id_Cart}}&id_Product={{item.id_Product.id}}"><i class="bi bi-trash2-fill"></i></a>
+						<br><br>
+					{% endfor %}
+
+
+
+			</div>
+		</div>
+	</div>
+{% endblock %} 

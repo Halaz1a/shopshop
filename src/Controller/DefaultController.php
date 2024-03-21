@@ -509,4 +509,128 @@ class DefaultController
 
     }
 
+    public function addItem()
+    {
+        $products = $this->productModel->getAllProductsByStock();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $quantity = filter_input(INPUT_POST, 'quantity', FILTER_SANITIZE_NUMBER_INT);
+            $id_Product = filter_input(INPUT_POST, 'id_Product', FILTER_SANITIZE_NUMBER_INT);
+            $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+            
+
+            if (!empty($quantity) && !empty($id_Product) && !empty($id)) {
+                $product = $this->productModel->getOneProduct(intVal($id_Product));
+                $unitPrice = $product->getPrice();
+                $cart = $this->cartModel->getOneCart(intVal($id));
+                $cartItem = new CartItem(intVal($quantity), $unitPrice, $product, $cart);
+                $success = $this->cartItemModel->createCartItem($cartItem);
+                if ($success) {
+                    header('Location: index.php?page=carts');
+                }
+            } else {
+                $_SESSION['message'] = 'Veuillez saisir toutes les données.';
+            
+            }
+        }
+        echo $this->twig->render('defaultController/addItem.html.twig', ['products'=>$products]);
+    }
+
+    public function itemsList()
+    {
+        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+        $items = $this->cartItemModel->getAllItemsByCart(intVal($id));
+        echo $this->twig->render('defaultController/itemsList.html.twig', ['items'=>$items]);
+    }
+
+    public function addCartItem()
+    {
+        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+        $product = $this->productModel->getOneProduct(intVal($id));
+        $id_User =  $_SESSION['id_User'];
+        $cart = $this->cartModel->getCartByUser($id_User);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $quantity = filter_input(INPUT_POST, 'quantity', FILTER_SANITIZE_NUMBER_INT);
+            
+
+            if (!empty($quantity)) {
+                $unitPrice = $product->getPrice();
+                $cartItem = new CartItem(intVal($quantity), $unitPrice, $product, $cart);
+                $success = $this->cartItemModel->createCartItem($cartItem);
+                if ($success) {
+                    header('Location: index.php?page=home');
+                }
+            } else {
+                $_SESSION['message'] = 'Veuillez saisir toutes les données.';
+            
+            }
+        }
+        echo $this->twig->render('defaultController/addCartItem.html.twig', ['product'=>$product]);
+    }
+
+    public function myCart()
+    {
+        $id_User =  $_SESSION['id_User'];
+        $cart = $this->cartModel->getCartByUser($id_User);
+
+        if (empty($cart)){
+            $creationDate = date('Y-m-d');
+            $status="en cours";
+            $user = $this->userModel->getOneUser(intVal($id_User));
+            $cart = new Cart(null, $creationDate, $status, $user);
+        }
+
+        $id_Cart = $cart->getId_Cart();
+        $items = $this->cartItemModel->getAllItemsByCart(intVal($id_Cart));
+
+        if (empty($items)){
+            $_SESSION['message'] = 'Aucun article dans le panier.';
+        }
+        echo $this->twig->render('defaultController/myCart.html.twig', ['items'=>$items]);
+    }
+
+    public function deleteItem()
+    {
+        $id_Product = filter_input(INPUT_GET, 'id_Product', FILTER_SANITIZE_NUMBER_INT);
+        $id_Cart = filter_input(INPUT_GET, 'id_Cart', FILTER_SANITIZE_NUMBER_INT);
+        $this->cartItemModel->deleteCartItem(intVal($id_Product), intVal($id_Cart));
+        header('Location: index.php?page=carts');
+    }
+
+    public function deleteCartItem()
+    {
+        $id_Product = filter_input(INPUT_GET, 'id_Product', FILTER_SANITIZE_NUMBER_INT);
+        $id_Cart = filter_input(INPUT_GET, 'id_Cart', FILTER_SANITIZE_NUMBER_INT);
+        $this->cartItemModel->deleteCartItem(intVal($id_Product), intVal($id_Cart));
+        header('Location: index.php?page=myCart');
+    }
+
+    public function updateItem() 
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id_Product = filter_input(INPUT_GET, 'id_Product', FILTER_SANITIZE_NUMBER_INT);
+            $id_Cart = filter_input(INPUT_GET, 'id_Cart', FILTER_SANITIZE_NUMBER_INT);
+            $quantity = filter_input(INPUT_POST, 'quantity', FILTER_SANITIZE_NUMBER_INT);
+
+            if (!empty($_POST['quantity'])) {
+                $cart = $this->cartModel->getOneCart(intVal($id_Cart));
+                $product = $this->productModel->getOneProduct(intVal($id_Product));
+                $unitPrice = $product->getPrice();
+                $cartItem = new CartItem(intVal($quantity), $unitPrice, $product, $cart);
+                $success = $this->cartItemModel->updateCartItem($cartItem);
+                if ($success) {
+                    header('Location: index.php?page=carts');
+                }
+            }
+        }
+        else{
+            $id_Product = filter_input(INPUT_GET, 'id_Product', FILTER_SANITIZE_NUMBER_INT);
+            $id_Cart = filter_input(INPUT_GET, 'id_Cart', FILTER_SANITIZE_NUMBER_INT);
+        }
+        $product = $this->productModel->getOneProduct(intVal($id_Product));
+            echo $this->twig->render('defaultController/updateItem.html.twig', ['product'=>$product]);
+    }
+
 }
+
+/*Client : modifier item | Admin : modifier cart --> problème | Commandes */

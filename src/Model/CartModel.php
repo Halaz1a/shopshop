@@ -68,7 +68,7 @@ class CartModel{
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':creationDate', $cart->getCreationDate(), PDO::PARAM_STR);
         $stmt->bindValue(':status', $cart->getStatus(), PDO::PARAM_STR);
-        $stmt->bindValue(':id', $cart->getId()->getIdUser(), PDO::PARAM_STR);
+        $stmt->bindValue(':id', $cart->getId()->getIdUser(), PDO::PARAM_INT);
         return $stmt->execute();
     }
 
@@ -84,7 +84,7 @@ class CartModel{
         }
 
         $user = new User($row['id_User'], $row['email'],$row['lastName'], $row['firstName'], $row['password'], json_decode($row['roles']), $row['address'], $row['postalCode'], $row['city'], $row['phone']);
-        $cart = new Cart($row['id_Cart'], $row['creationDate'], $row['status'], $users); 
+        $cart = new Cart($row['id_Cart'], $row['creationDate'], $row['status'], $user); 
         return $cart;
     }
 }
